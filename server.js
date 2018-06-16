@@ -6,7 +6,8 @@ const knex = require('knex');
 
 const register = require('./controllers/register.js');
 const signIn = require('./controllers/signIn.js');
-const profile = require('./controllers/profile.js')
+const profile = require('./controllers/profile.js');
+const image = require('./controllers/image.js');
 
 
 const db = knex({
@@ -30,16 +31,7 @@ app.post('/register', (req, res) => register.handleRegister(req, res, db, bcrypt
 
 app.get('/profile/:id', (req, res) => profile.handleProfile(req, res, db));
 
-app.put('/image', (req, res) => {
-  const {id} = req.body;
-  db('users').where('id', '=', id)
-  .increment('entries', 1)
-  .returning('entries')
-  .then(entries => {
-    res.json(entries[0]);
-  })
-  .catch(err => res.status(400).json('Unable to get entries'))
-})
+app.put('/image', (req, res) => image.handleImage(req, res, db));
 
 app.listen(3000, () => {
   console.log('app is running on port 3000');
