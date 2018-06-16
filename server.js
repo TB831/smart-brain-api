@@ -73,7 +73,7 @@ app.get('/profile/:id', (req, res) => {
     id: id
   }).then(user => {
     if (user.length) {
-      res.json(user[0])
+      res.json(user[0]);
     } else {
       res.status(400).json('ID not found')
     }
@@ -87,8 +87,9 @@ app.put('/image', (req, res) => {
   .increment('entries', 1)
   .returning('entries')
   .then(entries => {
-    console.log(entries)
+    res.json(entries[0]);
   })
+  .catch(err => res.status(400).json('Unable to get entries'))
 })
 
 app.listen(3000, () => {
